@@ -42,6 +42,9 @@ public class Metar {
 
     private String pressure;
 
+    private int temp;
+    private int dew_point;
+
     public Metar(String icao) throws IOException {
 
         icao_code = icao.toUpperCase();
@@ -49,7 +52,7 @@ public class Metar {
         updateData();
     }
 
-    void updateData() throws IOException {
+    public void updateData() throws IOException {
         fetch();
         parse();
     }
@@ -207,7 +210,41 @@ public class Metar {
             }
         }
 
+        //temperatura
 
+        for (String metarElement: tempMetar)
+        {
+            try
+            {
+                if((isNumeric(metarElement.substring(0,2)) && (metarElement.charAt(2) == '/')) || (isNumeric(metarElement.substring(1,3)) && (metarElement.charAt(3) == '/') && metarElement.charAt(0) == 'M' )) {
+                    if (metarElement.charAt(0) == 'M') {
+                        temp = Integer.parseInt(metarElement.substring(1, 3));
+                        temp *= -1;
+
+                        if (metarElement.charAt(4) == 'M') {
+                            dew_point = Integer.parseInt(metarElement.substring(5, 7));
+                            dew_point *= -1;
+                        } else {
+                            dew_point = Integer.parseInt(metarElement.substring(4, 6));
+                        }
+
+                    } else {
+                        temp = Integer.parseInt(metarElement.substring(0, 2));
+                        if (metarElement.charAt(3) == 'M') {
+                            dew_point = Integer.parseInt(metarElement.substring(4, 6));
+                            dew_point *= -1;
+                        } else {
+                            dew_point = Integer.parseInt(metarElement.substring(3, 5));
+                        }
+                    }
+                    logger.info("temp: " + temp + " dew point: " + dew_point);
+                    tempMetar.remove(metarElement);
+                    break;
+                }
+            } catch (StringIndexOutOfBoundsException ignored) {
+
+            }
+        }
 
         logger.info(tempMetar.toString());
 
@@ -252,8 +289,8 @@ public class Metar {
             }
         }
 
-        String[] metar00Data = metar00DataString.split("\s");
-        String[] metar30Data = metar30DataString.split("\s");
+        String[] metar00Data = metar00DataString.split(" ");
+        String[] metar30Data = metar30DataString.split(" ");
 
         int time00 = 0;
         int time30 = 0;
@@ -296,4 +333,15 @@ public class Metar {
         }
         return true;
     }
+
+    public String getTime() {
+        return time+" UTC";
+    }
+
+    public String getDay() {
+        Calendar cal = Calendar.getInstance();
+        return day+"."+(cal.get(Calendar.MONTH)+1)+"."+cal.get(Calendar.YEAR);
+    }
+
+
 }

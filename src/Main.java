@@ -10,7 +10,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         logger.info("Starting program");
 
-        Metar testowy = new Metar("EPWA");
+        Metar testowy = new Metar("EPKT");
+
+        logger.info(testowy.getTime());
 
     }
 }
