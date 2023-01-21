@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -28,12 +29,21 @@ public class Metar {
     private boolean wind_gusting =false;
     private String wind_gusting_speed;
     private boolean wind_var = false;
-    private String[] wind_var_vals = new String[2];
+    private final String[] wind_var_vals = new String[2];
 
     private String visibility;
+    private String vertical_visibility;
 
+    private final List<String> cloud_types = Arrays.asList("FEW", "SCT", "BKN", "OVC");
+    private final List<Cloud> clouds = new ArrayList<>();
+    private boolean nsc = false;
+    private boolean cavok = false;
+    private boolean nosig = false;
+
+    private String pressure;
 
     public Metar(String icao) throws IOException {
+
         icao_code = icao.toUpperCase();
         logger.info("Creating Metar Object, airport: "+icao_code);
         updateData();
@@ -109,11 +119,95 @@ public class Metar {
         }
         else logger.error("Visibility not found");
 
-        if(isNumeric(tempMetar.get(0).substring(0, 5)) && tempMetar.get(0).length() > 4)
+        if((tempMetar.get(0).length() > 4) && isNumeric(tempMetar.get(0).substring(0, 5)))
         {
             //minimal vis
             tempMetar.remove(0);
         } else logger.info("No minimal vis");
+
+        boolean cloud_found = false;
+        //clouds
+        while(true)
+        {
+            for (String cloud: cloud_types)
+            {
+                int index = -1;
+                for (String metarElement: tempMetar)
+                {
+                    if(metarElement.contains(cloud))
+                    {
+                        index = tempMetar.indexOf(metarElement);
+                        break;
+                    }
+                }
+
+                if(index != -1)
+                {
+                    cloud_found = true;
+
+                    String cloudStr = tempMetar.get(index);
+
+                    Cloud tempCloud = new Cloud(cloudStr.substring(0,3), cloudStr.substring(3,6), cloudStr.contains("CB"));
+
+                    clouds.add(tempCloud);
+
+                    tempMetar.remove(index);
+                }
+            }
+            if(!cloud_found)
+                break;
+
+            cloud_found = false;
+        }
+        if(tempMetar.contains("NSC"))
+        {
+            logger.info("No clouds");
+            nsc = true;
+            tempMetar.remove("NSC");
+        } else if (tempMetar.contains("CAVOK")) {
+            logger.info("Celing and visability ok");
+            cavok=true;
+            tempMetar.remove("CAVOK");
+        }
+        else
+            logger.info(clouds);
+
+        for (String metarElement: tempMetar)
+        {
+            if(metarElement.startsWith("VV"))
+            {
+                vertical_visibility = metarElement.substring(2,5);
+                logger.info(metarElement);
+                tempMetar.remove(metarElement);
+                break;
+            }
+        }
+
+
+        //ciśnienie
+        for (String metarElement: tempMetar)
+        {
+            if(metarElement.startsWith("Q"))
+            {
+                pressure = metarElement.substring(1,5);
+                logger.info("QNH "+pressure);
+                tempMetar.remove(metarElement);
+                break;
+            }
+        }
+
+        for (String metarElement: tempMetar)
+        {
+            if(metarElement.startsWith("NOSIG"))
+            {
+                logger.info("NOSIG");
+                nosig=true;
+                tempMetar.remove(metarElement);
+                break;
+            }
+        }
+
+
 
         logger.info(tempMetar.toString());
 
