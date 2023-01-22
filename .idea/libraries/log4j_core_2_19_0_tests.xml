@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="log4j-core-2.19.0-tests">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/log4j-core-2.19.0-tests.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.jakubowskii.metardecoder.MainController">
+   <children>
+      <Button layoutX="175.0" layoutY="14.0" mnemonicParsing="false" onAction="#getMetar" text="Get METAR" />
+      <TextField fx:id="icaoCode" layoutX="14.0" layoutY="14.0" promptText="Airport ICAO" />
+      <Text fx:id="rawMetar" layoutX="16.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for input" wrappingWidth="569.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Circle fill="#b9b9b9" layoutX="135.0" layoutY="260.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+      <AnchorPane layoutX="135.0" layoutY="260.0" prefHeight="52.0" prefWidth="45.0">
+         <children>
+            <Line fx:id="windVarLeft" endX="39.0" endY="-87.0" opacity="0.0" stroke="BLUE" strokeWidth="3.0" />
+            <Line fx:id="windVarRight" endX="39.0" endY="87.0" opacity="0.0" stroke="BLUE" strokeWidth="3.0" />
+            <Line fx:id="windLine" endX="35.0" endY="-81.0" opacity="0.0" stroke="RED" strokeWidth="3.0" />
+            <Line fx:id="windLineLeft" endX="-59.0" endY="13.0" opacity="0.0" stroke="RED" strokeWidth="3.0" />
+            <Line fx:id="windLineRight" endX="45.0" opacity="0.0" stroke="RED" strokeWidth="3.0" />
+         </children>
+      </AnchorPane>
+      <Text fx:id="date" layoutX="16.0" layoutY="99.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date xuxuxuxuxuxuxuxx Date xuxuxuxuxuxuxuxxDate xuxuxuxuxuxuxuxx" wrappingWidth="569.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="windInfo" layoutX="16.0" layoutY="120.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wind" wrappingWidth="291.97265625">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="116.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="N" textAlignment="CENTER" wrappingWidth="37.9765625">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="225.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" textAlignment="CENTER" wrappingWidth="37.9765625">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="116.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S" textAlignment="CENTER" wrappingWidth="37.9765625">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="6.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="W" textAlignment="CENTER" wrappingWidth="37.9765625">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="vis" layoutX="324.0" layoutY="175.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Widzialność" wrappingWidth="261.13671875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="RED" layoutX="375.0" layoutY="391.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NIE DO UŻYTKU OPERACYJNEGO">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Line endX="-11.0" endY="-149.0" layoutX="323.0" layoutY="260.0" startX="-11.0" startY="129.0" />
+      <Text fx:id="temp" layoutX="324.0" layoutY="129.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Temp" wrappingWidth="261.13671875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="clouds" layoutX="324.0" layoutY="215.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="chmuryryy" wrappingWidth="261.13671875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
